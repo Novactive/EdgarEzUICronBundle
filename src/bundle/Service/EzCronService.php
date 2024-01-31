@@ -2,18 +2,18 @@
 
 namespace Edgar\EzUICronBundle\Service;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Edgar\Cron\Handler\CronHandler;
 use Edgar\EzUICron\Repository\EdgarEzCronRepository;
 use Edgar\EzUICronBundle\Entity\EdgarEzCron;
-use eZ\Publish\Core\Base\Exceptions\NotFoundException;
+use Ibexa\Core\Base\Exceptions\NotFoundException;
 use Edgar\Cron\Cron\CronInterface;
 use Edgar\CronBundle\Entity\EdgarCron;
 use Edgar\CronBundle\Service\CronService;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;;
 
 /**
  * Class EzCronService.
@@ -26,7 +26,7 @@ class EzCronService
     /** @var CronHandler $cronHandler */
     protected $cronHandler;
 
-    /** @var EdgarEzCronRepository $repository */
+    /** @var ManagerRegistry $repository */
     protected $repository;
 
     /** @var TranslatorInterface $translator */
@@ -37,13 +37,13 @@ class EzCronService
      *
      * @param CronService $cronService
      * @param CronHandler $cronHandler
-     * @param Registry $doctrineRegistry
+     * @param ManagerRegistry $doctrineRegistry
      * @param TranslatorInterface $translator
      */
     public function __construct(
         CronService $cronService,
         CronHandler $cronHandler,
-        Registry $doctrineRegistry,
+        ManagerRegistry $doctrineRegistry,
         TranslatorInterface $translator
     ) {
         $this->cronService = $cronService;

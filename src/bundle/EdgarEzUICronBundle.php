@@ -20,7 +20,7 @@ class EdgarEzUICronBundle extends Bundle
         parent::build($container);
 
         /** @var EzPublishCoreExtension $eZExtension */
-        $eZExtension = $container->getExtension('ezpublish');
+        $eZExtension = $container->getExtension('ibexa');
         $eZExtension->addPolicyProvider(new UICronPolicyProvider($this->getPath()));
     }
 }

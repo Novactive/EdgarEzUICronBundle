@@ -1,58 +1,77 @@
-{% extends "@EzPlatformAdminUi/layout.html.twig" %}
+{% extends "@ibexadesign/ui/layout.html.twig" %}
 
 {% trans_default_domain 'crons' %}
 
 {% block breadcrumbs %}
-    {% include '@EzPlatformAdminUi/parts/breadcrumbs.html.twig' with { items: [
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
         { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
         { url: path('edgar.ezuicron.list'), value: 'crons.breadcrumb.view'|trans|desc('Cronjobs') },
     ]} %}
 {% endblock %}
-
-{% block page_title %}
-    {% include '@EzPlatformAdminUi/parts/page_title.html.twig' with {
+{% block header %}
+    {% include '@ibexadesign/ui/page_title.html.twig' with {
         title: 'crons.view.title'|trans|desc('Cronjobs'),
-        iconName: 'schedule'
     } %}
 {% endblock %}
 
 {% block content %}
-    <section class="container mt-4">
+    <section class="container ibexa-container">
+        {% set body_rows = [] %}
+        {% for alias, cron in crons %}
+            {% set col_alias %}
+                {{ alias }}
+            {% endset %}
 
-        <div class="ez-table-header mt-3">
-            <h5>{{ 'cron.header'|trans({'%total%': crons|length})|desc('CronJobs (%total%)') }}</h5>
-        </div>
+            {% set col_expression %}
+                {{ cron.expression }}
+            {% endset %}
 
-        {% if crons is empty %}
-            <table class="table">
-                <tr>
-                    <td colspan="4">
-                        <span>{{ 'cron.empty'|trans|desc('Sorry, no cronjobs were found.') }}</span>
-                    </td>
-                </tr>
-            </table>
-        {% else %}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>{{ 'edgarezcron.cron.th.alias'|trans|desc('Alias') }}</th>
-                    <th>{{ 'edgarezcron.cron.th.expression'|trans|desc('Expression') }}</th>
-                    <th>{{ 'edgarezcron.cron.th.arguments'|trans|desc('Arguments') }}</th>
-                    <th>{{ 'edgarezcron.cron.th.priority'|trans|desc('Priority') }}</th>
-                    <th>{{ 'edgarezcron.cron.th.enabled'|trans|desc('Enabled') }}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for alias, cron in crons %}
-                    {% include '@EdgarEzUICron/cron/cron.html.twig' with { alias: alias, cron: cron } %}
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+            {% set col_arguments %}
+                {{ cron.arguments }}
+            {% endset %}
 
+            {% set col_priority %}
+                {{ cron.priority }}
+            {% endset %}
+
+            {% set col_enabled %}
+                <input id="edgar-ezuicron-enabled-{{ alias }}" type="checkbox" disabled=""
+                       {% if cron.enabled %}checked=""{% endif %}
+                       title="{% if cron.enabled %}Enabled{% else %}Disabled{% endif %}">
+            {% endset %}
+
+            {% set col_edit %}
+                <a
+                        title="{{ 'role.view.list.action.edit'|trans|desc('Edit') }}"
+                        href="{{ path('edgar.ezuicron.update', {'alias': alias}) }}"
+                        class="btn ibexa-btn ibexa-btn--ghost ibexa-btn--no-text"
+                >
+                    <svg class="ibexa-icon ibexa-icon--small">
+                        <use xlink:href="{{ ibexa_icon_path('edit') }}"></use>
+                    </svg>
+                </a>
+            {% endset %}
+            {% set body_rows = body_rows|merge([{ cols: [
+                { content: col_alias, raw: true },
+                { content: col_expression, raw: true },
+                { content: col_arguments, raw: true },
+                { content: col_priority, raw: true },
+                { content: col_enabled, raw: true },
+                { content: col_edit, raw: true },
+            ] }]) %}
+        {% endfor %}
+        {% include '@ibexadesign/ui/component/table/table.html.twig' with {
+            headline:  'cron.header'|trans({'%total%': crons|length})|desc('CronJobs (%total%)') ,
+            head_cols: [
+                { content: 'edgarezcron.cron.th.alias'|trans|desc('Alias')  },
+                { content: 'edgarezcron.cron.th.expression'|trans|desc('Expression') },
+                { content: 'edgarezcron.cron.th.arguments'|trans|desc('Arguments') },
+                { content: 'edgarezcron.cron.th.priority'|trans|desc('Priority') },
+                { content: 'edgarezcron.cron.th.enabled'|trans|desc('Enabled') },
+                { content: '' },
+            ],
+            body_rows,
+            empty_table_info_text: 'workflow.list.empty'|trans|desc('No workflows configured. All workflows will show up here.'),
+        } %}
     </section>
-
-    <br />
-
 {% endblock %}

@@ -5,16 +5,15 @@ namespace Edgar\EzUICronBundle\Controller;
 use Edgar\EzUICron\Form\SubmitHandler;
 use Edgar\EzUICronBundle\Entity\EdgarEzCron;
 use Edgar\EzUICronBundle\Service\EzCronService;
-use eZ\Publish\API\Repository\PermissionResolver;
-use EzSystems\EzPlatformAdminUi\Notification\NotificationHandlerInterface;
-use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
+use Ibexa\Contracts\Core\Repository\PermissionResolver;
+use Ibexa\AdminUi\Notification\FlashBagNotificationHandler;
+use Ibexa\Bundle\Core\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use eZ\Publish\API\Repository\Repository;
 use Edgar\EzUICron\Form\Factory\FormFactory;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CronController.
@@ -24,16 +23,13 @@ class CronController extends Controller
     /** @var EzCronService $cronService cron service */
     protected $cronService;
 
-    /** @var Repository $repository */
-    protected $repository;
-
     /** @var FormFactory */
     protected $formFactory;
 
     /** @var SubmitHandler */
     protected $submitHandler;
 
-    /** @var NotificationHandlerInterface $notificationHandler */
+    /** @var FlashBagNotificationHandler $notificationHandler */
     protected $notificationHandler;
 
     /** @var TranslatorInterface */
@@ -46,29 +42,31 @@ class CronController extends Controller
      * CronController constructor.
      *
      * @param EzCronService $cronService
-     * @param Repository $repository
      * @param FormFactory $formFactory
      * @param SubmitHandler $submitHandler
-     * @param NotificationHandlerInterface $notificationHandler
+     * @param FlashBagNotificationHandler $notificationHandler
      * @param TranslatorInterface $translator
      * @param PermissionResolver $permissionResolver
      */
     public function __construct(
         EzCronService $cronService,
-        Repository $repository,
         FormFactory $formFactory,
         SubmitHandler $submitHandler,
-        NotificationHandlerInterface $notificationHandler,
+        FlashBagNotificationHandler $notificationHandler,
         TranslatorInterface $translator,
         PermissionResolver $permissionResolver
     ) {
         $this->cronService = $cronService;
-        $this->repository = $repository;
         $this->formFactory = $formFactory;
         $this->submitHandler = $submitHandler;
         $this->notificationHandler = $notificationHandler;
         $this->translator = $translator;
         $this->permissionResolver = $permissionResolver;
+    }
+
+    public function performAccessCheck()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
     }
 
     /**
@@ -106,7 +104,6 @@ class CronController extends Controller
 
         $form = $this->formFactory->updateCron($cron);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $result = $this->submitHandler->handle($form, $cron, function (EdgarEzCron $data, EdgarEzCron $cron, FormInterface $form) {
                 if (!$this->cronService->updateCron($data)) {
@@ -140,7 +137,7 @@ class CronController extends Controller
             }
         }
 
-        return $this->render('EdgarEzUICronBundle:cron:update.html.twig', [
+        return $this->render('@EdgarEzUICron/cron/update.html.twig', [
             'cron' => $cron,
             'form_cron_update' => $form->createView(),
         ]);

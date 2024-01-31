@@ -19,9 +19,8 @@
   },
   "require": {
     "php": ">=7.1",
-    "ezsystems/ezpublish-kernel": "^7.1",
-    "ezsystems/ezplatform-admin-ui": "^1.1",
-    "edgar/cron-bundle": "~1.0"
+    "ibexa/admin-ui": "~4.5.0",
+    "edgar/cron-bundle": "dev-master-ibx4"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "~2.7.1",

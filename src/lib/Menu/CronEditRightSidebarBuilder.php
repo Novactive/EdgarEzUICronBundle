@@ -4,7 +4,7 @@ namespace Edgar\EzUICron\Menu;
 
 use Edgar\EzUICron\Menu\Event\ConfigureMenuEvent;
 use Edgar\EzUICronBundle\Entity\EdgarEzCron;
-use EzSystems\EzPlatformAdminUi\Menu\AbstractBuilder;
+use Ibexa\Contracts\AdminUi\Menu\AbstractBuilder;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Translation\TranslationContainerInterface;
 use Knp\Menu\ItemInterface;
@@ -44,7 +44,7 @@ class CronEditRightSidebarBuilder extends AbstractBuilder implements Translation
                 self::ITEM__SAVE,
                 [
                     'attributes' => [
-                        'class' => 'btn--trigger',
+                        'class' => 'ibexa-btn--trigger',
                         'data-click' => sprintf('#update-cron-%s_update', $cron->getAlias()),
                     ],
                     'extras' => ['icon' => 'save'],
@@ -73,3 +73,5 @@ class CronEditRightSidebarBuilder extends AbstractBuilder implements Translation
         ];
     }
 }
+
+

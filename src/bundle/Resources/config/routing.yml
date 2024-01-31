@@ -1,14 +1,14 @@
 edgar.ezuicron.list:
     path: /list
     defaults:
-        _controller: 'EdgarEzUICronBundle:Cron:list'
+        _controller: 'Edgar\EzUICronBundle\Controller\CronController::listAction'
 
 edgar.ezuicron.update:
     path: /update/{alias}
     defaults:
-        _controller: 'EdgarEzUICronBundle:Cron:update'
+        _controller: 'Edgar\EzUICronBundle\Controller\CronController::updateAction'
 
 edgar.ezuicron.reset:
     path: /reset/{alias}
     defaults:
-        _controller: 'EdgarEzUICronBundle:Cron:reset'
+        _controller: 'Edgar\EzUICronBundle\Controller\CronController::resetAction'

@@ -4,14 +4,14 @@ namespace Edgar\EzUICronBundle\Command;
 
 use Cron\CronExpression;
 use Edgar\EzUICronBundle\Service\EzCronService;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class CronCommand.
  */
-class CronCommand extends ContainerAwareCommand
+class CronCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -7,8 +7,8 @@ use Edgar\CronBundle\Entity\EdgarCron;
 use Edgar\EzUICronBundle\Service\EzCronService;
 use eZ\Publish\API\Repository\PermissionResolver;
 use eZ\Publish\API\Repository\Repository;
-use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
-use EzSystems\EzPlatformAdminUi\Tab\OrderedTabInterface;
+use Ibexa\Contracts\AdminUi\Tab\AbstractTab;
+use Ibexa\Contracts\AdminUi\Tab\OrderedTabInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 

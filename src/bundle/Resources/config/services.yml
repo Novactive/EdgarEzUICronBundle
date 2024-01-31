@@ -12,6 +12,9 @@ services:
     Edgar\EzUICronBundle\Service\EzCronService:
         public: true
 
+    Edgar\EzUICron\Form\Factory\FormFactory:
+        public: true
+
     Edgar\EzUICronBundle\EventListener\ConfigureMenuListener:
         public: true
         tags:
@@ -19,5 +22,4 @@ services:
 
     Edgar\EzUICron\Form\SubmitHandler:
         public: true
-        arguments:
-            $notificationHandler: "@EzSystems\\EzPlatformAdminUi\\Notification\\FlashBagNotificationHandler"
+        arguments: ['@Ibexa\AdminUi\Notification\FlashBagNotificationHandler']
